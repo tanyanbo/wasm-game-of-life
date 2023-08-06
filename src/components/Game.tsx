@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import cn from 'classnames';
 
 import { Universe } from '../../pkg/wasm_game_of_life';
@@ -22,6 +22,11 @@ export default function Game({
 }: GameProps) {
   const [isBlack, setIsBlack] = useState<boolean[]>(
     () => Array.from({ length: rows * cols }).fill(true) as boolean[]
+  );
+
+  const array = useMemo(
+    () => Array.from({ length: rows * cols }),
+    [rows, cols]
   );
 
   useEffect(() => {
@@ -64,7 +69,7 @@ export default function Game({
       }}
       className="grid m-3"
     >
-      {Array.from({ length: rows * cols }).map((_, idx) => (
+      {array.map((_, idx) => (
         <div
           key={idx}
           className={cn('aspect-square', {
