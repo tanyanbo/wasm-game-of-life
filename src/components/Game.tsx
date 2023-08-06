@@ -37,14 +37,18 @@ export default function Game({
 
       const cellsPtr = universe.cells();
 
-      const cells = new Uint8Array(memory.buffer, cellsPtr, rows * cols);
+      const cells = new Uint8Array(
+        memory.buffer,
+        cellsPtr,
+        Math.ceil((rows * cols) / 8)
+      );
 
       const newIsBlack: boolean[] = [];
 
       for (let r = 0; r < rows; r++) {
         for (let c = 0; c < cols; c++) {
           const n = r * rows + c;
-          newIsBlack.push(cells[n] ? false : true);
+          newIsBlack.push(isBitSet(n, cells) ? false : true);
         }
       }
 
@@ -79,4 +83,10 @@ export default function Game({
       ))}
     </div>
   );
+}
+
+function isBitSet(n: number, arr: Uint8Array) {
+  const byte = Math.floor(n / 8);
+  const mask = 1 << n % 8;
+  return (arr[byte] & mask) === mask;
 }
