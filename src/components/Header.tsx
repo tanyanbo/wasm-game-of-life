@@ -4,7 +4,7 @@ import cn from 'classnames';
 import startIcon from '../assets/start.svg';
 import pauseIcon from '../assets/pause.svg';
 import stopIcon from '../assets/stop.svg';
-import { GameState } from '../common';
+import { GameState, INITIAL_COLS, INITIAL_ROWS } from '../common';
 
 interface HeaderProps {
   gameState: GameState;
@@ -15,8 +15,8 @@ interface HeaderProps {
 }
 
 export const Header = ({ gameState, onGameStateChange }: HeaderProps) => {
-  const [rows, setRows] = useState(30);
-  const [cols, setCols] = useState(30);
+  const [rows, setRows] = useState(INITIAL_ROWS);
+  const [cols, setCols] = useState(INITIAL_COLS);
 
   return (
     <div className="mb-3 grid items-center grid-rows-2 grid-cols-2">

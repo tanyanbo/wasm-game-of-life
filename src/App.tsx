@@ -2,14 +2,14 @@ import { useState } from 'react';
 
 import Game from './components/Game';
 import { Header } from './components/Header';
-import { GameState } from './common';
+import { GameState, INITIAL_COLS, INITIAL_ROWS } from './common';
 import { Universe } from '../pkg/wasm_game_of_life';
 
 import './index.css';
 
 function App() {
-  const [rows, setRows] = useState(30);
-  const [cols, setCols] = useState(30);
+  const [rows, setRows] = useState(INITIAL_ROWS);
+  const [cols, setCols] = useState(INITIAL_COLS);
   const [gameState, setGameState] = useState(GameState.Stopped);
   const [universe, setUniverse] = useState(() => Universe.new(rows, cols));
 

@@ -3,3 +3,6 @@ export enum GameState {
   Paused,
   Stopped,
 }
+
+export const INITIAL_ROWS = 10;
+export const INITIAL_COLS = 10;

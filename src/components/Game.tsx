@@ -79,6 +79,14 @@ export default function Game({
           className={cn('aspect-square', {
             'bg-white': !isBlack[idx],
           })}
+          onClick={() => {
+            universe.set(idx, isBlack[idx]);
+            setIsBlack((prev) => {
+              const result = [...prev];
+              result[idx] = !prev[idx];
+              return result;
+            });
+          }}
         ></div>
       ))}
     </div>
