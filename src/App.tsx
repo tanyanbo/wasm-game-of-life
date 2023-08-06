@@ -33,7 +33,10 @@ function App() {
   }
 
   return (
-    <>
+    <div className="max-w-5xl">
+      <h3 className="text-center mt-3 text-3xl text-sky-700">
+        Conway's Game of Life with React and WebAssembly
+      </h3>
       <Header gameState={gameState} onGameStateChange={onGameStateChange} />
       <Game
         rows={rows}
@@ -42,7 +45,7 @@ function App() {
         gameState={gameState}
         universe={universe}
       />
-    </>
+    </div>
   );
 }
 
