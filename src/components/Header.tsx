@@ -1,8 +1,24 @@
 import { useState } from 'react';
 
-export const Header = () => {
+export interface GameData {
+  rows: number;
+  cols: number;
+  start: boolean;
+}
+
+interface HeaderProps {
+  startOrEnd(data: GameData): void;
+}
+
+export const Header = ({ startOrEnd }: HeaderProps) => {
   const [rows, setRows] = useState(10);
   const [cols, setCols] = useState(10);
+  const [buttonText, setButtonText] = useState<'start' | 'stop'>('start');
+
+  function onStartOrEnd() {
+    startOrEnd({ rows, cols, start: buttonText === 'start' });
+    setButtonText((prev) => (prev === 'start' ? 'stop' : 'start'));
+  }
 
   return (
     <div className="m-3 grid items-center grid-rows-2 grid-cols-2">
@@ -30,8 +46,11 @@ export const Header = () => {
           onChange={(e) => setCols(+e.target.value)}
         />
       </div>
-      <button className="row-span-2 h-10 justify-self-end bg-sky-500 hover:bg-sky-600 rounded-xl text-white w-20">
-        Start
+      <button
+        onClick={onStartOrEnd}
+        className="row-span-2 h-10 justify-self-end bg-sky-500 hover:bg-sky-600 rounded-xl text-white w-20"
+      >
+        {buttonText}
       </button>
     </div>
   );
