@@ -23,6 +23,7 @@ export const Header = ({ gameState, onGameStateChange }: HeaderProps) => {
       <div className="row-start-1 row-end-1 w-48 mt-3 grid gap-2 grid-cols-[50px_minmax(0,_1fr)] justify-between items-center">
         <label htmlFor="rows">Rows</label>
         <input
+          disabled={gameState !== GameState.Stopped}
           className="p-1 pl-2 border rounded-lg border-gray-300"
           type="number"
           max={100}
@@ -35,6 +36,7 @@ export const Header = ({ gameState, onGameStateChange }: HeaderProps) => {
       <div className="row-start-2 row-end-2 w-48 mt-3 grid gap-2 grid-cols-[50px_minmax(0,_1fr)] justify-between items-center">
         <label htmlFor="cols">Cols</label>
         <input
+          disabled={gameState !== GameState.Stopped}
           className="p-1 pl-2 border rounded-lg border-gray-300"
           type="number"
           max={100}
