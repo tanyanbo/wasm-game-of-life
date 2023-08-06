@@ -11,8 +11,8 @@ interface HeaderProps {
 }
 
 export const Header = ({ startOrEnd }: HeaderProps) => {
-  const [rows, setRows] = useState(10);
-  const [cols, setCols] = useState(10);
+  const [rows, setRows] = useState(30);
+  const [cols, setCols] = useState(30);
   const [buttonText, setButtonText] = useState<'start' | 'stop'>('start');
 
   function onStartOrEnd() {

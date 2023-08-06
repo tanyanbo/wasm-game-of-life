@@ -5,8 +5,8 @@ import { GameData, Header } from './components/Header';
 import './index.css';
 
 function App() {
-  const [rows, setRows] = useState(10);
-  const [cols, setCols] = useState(10);
+  const [rows, setRows] = useState(30);
+  const [cols, setCols] = useState(30);
   const [started, setStarted] = useState(false);
 
   function startOrEnd({ rows, cols, start }: GameData) {

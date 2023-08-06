@@ -50,13 +50,13 @@ export default function Game({ rows, cols, tickTime, started }: GameProps) {
       style={{
         gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))`,
       }}
-      className={cn('grid p-3')}
+      className="grid m-3"
     >
       {Array.from({ length: rows * cols }).map((_, idx) => (
         <div
           key={idx}
-          className={cn('border border-black aspect-square', {
-            'bg-black': isBlack[idx],
+          className={cn('aspect-square', {
+            'bg-black': !isBlack[idx],
           })}
         ></div>
       ))}
