@@ -23,7 +23,7 @@ export const Header = ({ gameState, onGameStateChange }: HeaderProps) => {
       <div className="row-start-1 row-end-1 w-48 mt-3 grid gap-2 grid-cols-[50px_minmax(0,_1fr)] justify-between items-center">
         <label htmlFor="rows">Rows</label>
         <input
-          className="p-1 border rounded-lg border-gray-300"
+          className="p-1 pl-2 border rounded-lg border-gray-300"
           type="number"
           max={100}
           min={10}
@@ -35,7 +35,7 @@ export const Header = ({ gameState, onGameStateChange }: HeaderProps) => {
       <div className="row-start-2 row-end-2 w-48 mt-3 grid gap-2 grid-cols-[50px_minmax(0,_1fr)] justify-between items-center">
         <label htmlFor="cols">Cols</label>
         <input
-          className="p-1 border rounded-lg border-gray-300"
+          className="p-1 pl-2 border rounded-lg border-gray-300"
           type="number"
           max={100}
           min={10}
@@ -47,21 +47,21 @@ export const Header = ({ gameState, onGameStateChange }: HeaderProps) => {
       <div className="flex justify-self-end row-span-2 gap-3">
         {gameState !== GameState.Started ? (
           <img
-            className="w-7 h-7 cursor-pointer"
+            className="w-16 h-16 cursor-pointer"
             src={startIcon}
             alt="start"
             onClick={() => onGameStateChange(GameState.Started, { rows, cols })}
           />
         ) : (
           <img
-            className="w-7 h-7 cursor-pointer"
+            className="w-16 h-16 cursor-pointer"
             src={pauseIcon}
             alt="start"
             onClick={() => onGameStateChange(GameState.Paused)}
           />
         )}
         <img
-          className={cn('w-7 h-7', {
+          className={cn('w-16 h-16 ml-4', {
             'cursor-pointer': gameState !== GameState.Stopped,
             'cursor-not-allowed': gameState === GameState.Stopped,
           })}
