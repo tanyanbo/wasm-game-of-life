@@ -1,23 +1,31 @@
-import cn from 'classnames';
 import { useEffect, useState } from 'react';
+import cn from 'classnames';
+
 import { Universe } from '../../pkg/wasm_game_of_life';
 import { memory } from '../../pkg/wasm_game_of_life_bg.wasm';
+import { GameState } from '../common';
 
 interface GameProps {
   rows: number;
   cols: number;
   tickTime: number;
-  started: boolean;
+  gameState: GameState;
+  universe: Universe;
 }
 
-export default function Game({ rows, cols, tickTime, started }: GameProps) {
+export default function Game({
+  rows,
+  cols,
+  tickTime,
+  gameState,
+  universe,
+}: GameProps) {
   const [isBlack, setIsBlack] = useState<boolean[]>(
     () => Array.from({ length: rows * cols }).fill(true) as boolean[]
   );
 
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout>;
-    const universe = Universe.new(rows, cols);
 
     function tick() {
       universe.tick();
@@ -40,12 +48,14 @@ export default function Game({ rows, cols, tickTime, started }: GameProps) {
       timer = setTimeout(tick, tickTime);
     }
 
-    if (started) tick();
+    if (gameState === GameState.Started) {
+      tick();
+    }
 
     return () => {
       clearTimeout(timer);
     };
-  }, [tickTime, rows, cols, started]);
+  }, [tickTime, rows, cols, gameState, universe]);
 
   return (
     <div

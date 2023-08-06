@@ -1,24 +1,22 @@
 import { useState } from 'react';
+import cn from 'classnames';
 
-export interface GameData {
-  rows: number;
-  cols: number;
-  start: boolean;
-}
+import startIcon from '../assets/start.svg';
+import pauseIcon from '../assets/pause.svg';
+import stopIcon from '../assets/stop.svg';
+import { GameState } from '../common';
 
 interface HeaderProps {
-  startOrEnd(data: GameData): void;
+  gameState: GameState;
+  onGameStateChange(
+    newGameState: GameState,
+    boardInfo?: { rows: number; cols: number }
+  ): void;
 }
 
-export const Header = ({ startOrEnd }: HeaderProps) => {
+export const Header = ({ gameState, onGameStateChange }: HeaderProps) => {
   const [rows, setRows] = useState(30);
   const [cols, setCols] = useState(30);
-  const [buttonText, setButtonText] = useState<'start' | 'stop'>('start');
-
-  function onStartOrEnd() {
-    startOrEnd({ rows, cols, start: buttonText === 'start' });
-    setButtonText((prev) => (prev === 'start' ? 'stop' : 'start'));
-  }
 
   return (
     <div className="m-3 grid items-center grid-rows-2 grid-cols-2">
@@ -46,12 +44,36 @@ export const Header = ({ startOrEnd }: HeaderProps) => {
           onChange={(e) => setCols(+e.target.value)}
         />
       </div>
-      <button
-        onClick={onStartOrEnd}
-        className="row-span-2 h-10 justify-self-end bg-sky-500 hover:bg-sky-600 rounded-xl text-white w-20"
-      >
-        {buttonText}
-      </button>
+      <div className="flex justify-self-end row-span-2 gap-3">
+        {gameState !== GameState.Started ? (
+          <img
+            className="w-7 h-7 cursor-pointer"
+            src={startIcon}
+            alt="start"
+            onClick={() => onGameStateChange(GameState.Started, { rows, cols })}
+          />
+        ) : (
+          <img
+            className="w-7 h-7 cursor-pointer"
+            src={pauseIcon}
+            alt="start"
+            onClick={() => onGameStateChange(GameState.Paused)}
+          />
+        )}
+        <img
+          className={cn('w-7 h-7', {
+            'cursor-pointer': gameState !== GameState.Stopped,
+            'cursor-not-allowed': gameState === GameState.Stopped,
+          })}
+          src={stopIcon}
+          alt="start"
+          onClick={() => {
+            if (gameState !== GameState.Stopped) {
+              onGameStateChange(GameState.Stopped);
+            }
+          }}
+        />
+      </div>
     </div>
   );
 };

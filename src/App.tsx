@@ -1,24 +1,47 @@
 import { useState } from 'react';
+
 import Game from './components/Game';
-import { GameData, Header } from './components/Header';
+import { Header } from './components/Header';
+import { GameState } from './common';
+import { Universe } from '../pkg/wasm_game_of_life';
 
 import './index.css';
 
 function App() {
   const [rows, setRows] = useState(30);
   const [cols, setCols] = useState(30);
-  const [started, setStarted] = useState(false);
+  const [gameState, setGameState] = useState(GameState.Stopped);
+  const [universe, setUniverse] = useState(() => Universe.new(rows, cols));
 
-  function startOrEnd({ rows, cols, start }: GameData) {
-    setRows(rows);
-    setCols(cols);
-    setStarted(start);
+  function onGameStateChange(
+    newGameState: GameState,
+    boardInfo?: { rows: number; cols: number }
+  ) {
+    if (newGameState === GameState.Started) {
+      if (boardInfo == null) {
+        throw new Error('Need to provide a row and col count');
+      }
+      setRows(boardInfo.rows);
+      setCols(boardInfo.cols);
+    }
+
+    if (gameState === GameState.Stopped && newGameState === GameState.Started) {
+      setUniverse(() => Universe.new(boardInfo!.rows, boardInfo!.cols));
+    }
+
+    setGameState(newGameState);
   }
 
   return (
     <>
-      <Header startOrEnd={startOrEnd} />
-      <Game rows={rows} cols={cols} tickTime={100} started={started} />
+      <Header gameState={gameState} onGameStateChange={onGameStateChange} />
+      <Game
+        rows={rows}
+        cols={cols}
+        tickTime={100}
+        gameState={gameState}
+        universe={universe}
+      />
     </>
   );
 }
