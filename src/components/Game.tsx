@@ -1,15 +1,16 @@
 import cn from 'classnames';
 import { useEffect, useState } from 'react';
-import { Universe } from 'wasm-game-of-life';
+import { Universe } from '../../pkg/wasm_game_of_life';
 import { memory } from '../../pkg/wasm_game_of_life_bg.wasm';
 
 interface GameProps {
   rows: number;
   cols: number;
   tickTime: number;
+  started: boolean;
 }
 
-export default function Game({ rows, cols, tickTime }: GameProps) {
+export default function Game({ rows, cols, tickTime, started }: GameProps) {
   const [isBlack, setIsBlack] = useState<boolean[]>([]);
 
   useEffect(() => {
@@ -20,9 +21,6 @@ export default function Game({ rows, cols, tickTime }: GameProps) {
       universe.tick();
 
       const cellsPtr = universe.cells();
-
-      console.log(cellsPtr);
-      console.log(memory.buffer.byteLength);
 
       const cells = new Uint8Array(memory.buffer, cellsPtr, rows * cols);
 
@@ -40,12 +38,12 @@ export default function Game({ rows, cols, tickTime }: GameProps) {
       timer = setTimeout(tick, tickTime);
     }
 
-    tick();
+    if (started) tick();
 
     return () => {
       clearTimeout(timer);
     };
-  }, [tickTime, rows, cols]);
+  }, [tickTime, rows, cols, started]);
 
   return (
     <div
@@ -58,7 +56,7 @@ export default function Game({ rows, cols, tickTime }: GameProps) {
         <div
           key={idx}
           className={cn('border border-black aspect-square', {
-            'border-black': isBlack[idx],
+            'bg-black': isBlack[idx],
           })}
         ></div>
       ))}
