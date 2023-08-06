@@ -33,18 +33,20 @@ function App() {
   }
 
   return (
-    <div className="max-w-5xl">
-      <h3 className="text-center mt-3 text-3xl text-sky-700">
-        Conway's Game of Life with React and WebAssembly
-      </h3>
-      <Header gameState={gameState} onGameStateChange={onGameStateChange} />
-      <Game
-        rows={rows}
-        cols={cols}
-        tickTime={100}
-        gameState={gameState}
-        universe={universe}
-      />
+    <div className="w-full mt-4 flex justify-center">
+      <div id="main-content">
+        <h3 className="text-center mt-3 text-3xl text-sky-700">
+          Conway's Game of Life with React and WebAssembly
+        </h3>
+        <Header gameState={gameState} onGameStateChange={onGameStateChange} />
+        <Game
+          rows={rows}
+          cols={cols}
+          tickTime={100}
+          gameState={gameState}
+          universe={universe}
+        />
+      </div>
     </div>
   );
 }

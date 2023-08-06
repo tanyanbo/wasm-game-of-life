@@ -19,7 +19,7 @@ export const Header = ({ gameState, onGameStateChange }: HeaderProps) => {
   const [cols, setCols] = useState(30);
 
   return (
-    <div className="m-3 grid items-center grid-rows-2 grid-cols-2">
+    <div className="mb-3 grid items-center grid-rows-2 grid-cols-2">
       <div className="row-start-1 row-end-1 w-48 mt-3 grid gap-2 grid-cols-[50px_minmax(0,_1fr)] justify-between items-center">
         <label htmlFor="rows">Rows</label>
         <input

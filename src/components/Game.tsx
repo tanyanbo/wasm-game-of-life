@@ -67,7 +67,7 @@ export default function Game({
       style={{
         gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))`,
       }}
-      className="grid m-3"
+      className="grid"
     >
       {array.map((_, idx) => (
         <div
