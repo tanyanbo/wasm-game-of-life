@@ -67,13 +67,13 @@ export default function Game({
       style={{
         gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))`,
       }}
-      className="grid"
+      className="grid bg-black"
     >
       {array.map((_, idx) => (
         <div
           key={idx}
           className={cn('aspect-square', {
-            'bg-black': isBlack[idx],
+            'bg-white': !isBlack[idx],
           })}
         ></div>
       ))}
