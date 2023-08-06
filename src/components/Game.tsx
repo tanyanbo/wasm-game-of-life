@@ -11,7 +11,9 @@ interface GameProps {
 }
 
 export default function Game({ rows, cols, tickTime, started }: GameProps) {
-  const [isBlack, setIsBlack] = useState<boolean[]>([]);
+  const [isBlack, setIsBlack] = useState<boolean[]>(
+    () => Array.from({ length: rows * cols }).fill(true) as boolean[]
+  );
 
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout>;
@@ -56,7 +58,7 @@ export default function Game({ rows, cols, tickTime, started }: GameProps) {
         <div
           key={idx}
           className={cn('aspect-square', {
-            'bg-black': !isBlack[idx],
+            'bg-black': isBlack[idx],
           })}
         ></div>
       ))}
