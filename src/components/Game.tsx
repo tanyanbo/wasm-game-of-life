@@ -20,9 +20,9 @@ export default function Game({
   gameState,
   universe,
 }: GameProps) {
-  const [isBlack, setIsBlack] = useState<boolean[]>(
-    () => Array.from({ length: rows * cols }).fill(true) as boolean[]
-  );
+  const [isBlack, setIsBlack] = useState<boolean[]>(() => {
+    return getBoardState(universe, rows, cols);
+  });
 
   const array = useMemo(
     () => Array.from({ length: rows * cols }),
@@ -35,22 +35,7 @@ export default function Game({
     function tick() {
       universe.tick();
 
-      const cellsPtr = universe.cells();
-
-      const cells = new Uint8Array(
-        memory.buffer,
-        cellsPtr,
-        Math.ceil((rows * cols) / 8)
-      );
-
-      const newIsBlack: boolean[] = [];
-
-      for (let r = 0; r < rows; r++) {
-        for (let c = 0; c < cols; c++) {
-          const n = r * rows + c;
-          newIsBlack.push(isBitSet(n, cells) ? false : true);
-        }
-      }
+      const newIsBlack = getBoardState(universe, rows, cols);
 
       setIsBlack(newIsBlack);
 
@@ -91,6 +76,27 @@ export default function Game({
       ))}
     </div>
   );
+}
+
+function getBoardState(universe: Universe, rows: number, cols: number) {
+  const cellsPtr = universe.cells();
+
+  const cells = new Uint8Array(
+    memory.buffer,
+    cellsPtr,
+    Math.ceil((rows * cols) / 8)
+  );
+
+  const board: boolean[] = [];
+
+  for (let r = 0; r < rows; r++) {
+    for (let c = 0; c < cols; c++) {
+      const n = r * rows + c;
+      board.push(isBitSet(n, cells) ? false : true);
+    }
+  }
+
+  return board;
 }
 
 function isBitSet(n: number, arr: Uint8Array) {

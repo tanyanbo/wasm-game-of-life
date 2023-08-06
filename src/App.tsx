@@ -12,24 +12,28 @@ function App() {
   const [cols, setCols] = useState(INITIAL_COLS);
   const [gameState, setGameState] = useState(GameState.Stopped);
   const [universe, setUniverse] = useState(() => Universe.new(rows, cols));
+  const [gameComponentKey, setGameComponentKey] = useState(0);
 
   function onGameStateChange(
     newGameState: GameState,
     boardInfo?: { rows: number; cols: number }
   ) {
-    if (newGameState === GameState.Started) {
+    if (newGameState === GameState.Stopped) {
       if (boardInfo == null) {
         throw new Error('Need to provide a row and col count');
       }
-      setRows(boardInfo.rows);
-      setCols(boardInfo.cols);
-    }
-
-    if (gameState === GameState.Stopped && newGameState === GameState.Started) {
       setUniverse(() => Universe.new(boardInfo!.rows, boardInfo!.cols));
+      setGameComponentKey((prev) => prev + 1);
     }
 
     setGameState(newGameState);
+  }
+
+  function setRowsAndCols(data: { rows: number; cols: number }) {
+    setRows(data.rows);
+    setCols(data.cols);
+    setUniverse(() => Universe.new(data.rows, data.cols));
+    setGameComponentKey((prev) => prev + 1);
   }
 
   return (
@@ -38,13 +42,18 @@ function App() {
         <h3 className="text-center mt-3 text-3xl text-sky-700">
           Conway's Game of Life with React and WebAssembly
         </h3>
-        <Header gameState={gameState} onGameStateChange={onGameStateChange} />
+        <Header
+          gameState={gameState}
+          onGameStateChange={onGameStateChange}
+          setRowsAndCols={setRowsAndCols}
+        />
         <Game
           rows={rows}
           cols={cols}
           tickTime={100}
           gameState={gameState}
           universe={universe}
+          key={gameComponentKey}
         />
         <p className="mt-3 text-xl text-center">
           Click on a cell to toggle its state

@@ -12,14 +12,19 @@ interface HeaderProps {
     newGameState: GameState,
     boardInfo?: { rows: number; cols: number }
   ): void;
+  setRowsAndCols(data: { rows: number; cols: number }): void;
 }
 
-export const Header = ({ gameState, onGameStateChange }: HeaderProps) => {
+export const Header = ({
+  gameState,
+  onGameStateChange,
+  setRowsAndCols,
+}: HeaderProps) => {
   const [rows, setRows] = useState(INITIAL_ROWS);
   const [cols, setCols] = useState(INITIAL_COLS);
 
   return (
-    <div className="mb-3 grid items-center grid-rows-2 grid-cols-2">
+    <div className="mb-3 grid items-center grid-rows-3 grid-cols-2">
       <div className="row-start-1 row-end-1 w-48 mt-3 grid gap-2 grid-cols-[50px_minmax(0,_1fr)] justify-between items-center">
         <label htmlFor="rows">Rows</label>
         <input
@@ -46,13 +51,27 @@ export const Header = ({ gameState, onGameStateChange }: HeaderProps) => {
           onChange={(e) => setCols(+e.target.value)}
         />
       </div>
-      <div className="flex justify-self-end row-span-2 gap-3">
+      <button
+        className={cn(
+          'rounded-lg row-start-3 row-end-3 w-48 h-10 mt-3 text-white',
+          {
+            'cursor-pointer bg-sky-500 hover:bg-sky-600 ':
+              gameState === GameState.Stopped,
+            'cursor-not-allowed bg-gray-200': gameState !== GameState.Stopped,
+          }
+        )}
+        onClick={() => setRowsAndCols({ rows, cols })}
+        disabled={gameState !== GameState.Stopped}
+      >
+        Apply
+      </button>
+      <div className="flex justify-self-end row-span-3 gap-3">
         {gameState !== GameState.Started ? (
           <img
             className="w-16 h-16 cursor-pointer"
             src={startIcon}
             alt="start"
-            onClick={() => onGameStateChange(GameState.Started, { rows, cols })}
+            onClick={() => onGameStateChange(GameState.Started)}
           />
         ) : (
           <img
@@ -68,10 +87,10 @@ export const Header = ({ gameState, onGameStateChange }: HeaderProps) => {
             'cursor-not-allowed': gameState === GameState.Stopped,
           })}
           src={stopIcon}
-          alt="start"
+          alt="stop"
           onClick={() => {
             if (gameState !== GameState.Stopped) {
-              onGameStateChange(GameState.Stopped);
+              onGameStateChange(GameState.Stopped, { rows, cols });
             }
           }}
         />
