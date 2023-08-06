@@ -46,6 +46,9 @@ function App() {
           gameState={gameState}
           universe={universe}
         />
+        <p className="mt-3 text-xl text-center">
+          Click on a cell to toggle its state
+        </p>
       </div>
     </div>
   );

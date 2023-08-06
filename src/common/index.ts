@@ -4,5 +4,5 @@ export enum GameState {
   Stopped,
 }
 
-export const INITIAL_ROWS = 10;
-export const INITIAL_COLS = 10;
+export const INITIAL_ROWS = 30;
+export const INITIAL_COLS = 30;
